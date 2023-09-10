@@ -65,7 +65,11 @@ export default class UserService {
     });
   }
 
-  public delete() {}
+  public delete(id: number) {
+    return this.user.destroy({
+      where: { id }
+    });
+  }
 }
 
 export const Users = new UserService();

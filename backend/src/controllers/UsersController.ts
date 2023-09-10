@@ -78,7 +78,23 @@ export default class UserController extends BaseController {
     }
   }
 
-  public static async delete(req: Request, res: Response) {}
+  public static async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = await Users.getById(Number(req.params.id));
+      if (!user) {
+        throw super.throwBadRequest('delete_user', 'user was not found!');
+      }
+
+      await Users.delete(Number(req.params.id));
+
+      res.json({
+        status: 'success',
+        message: 'User was deleted.'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   public static async me(_req: Request, res: Response, next: NextFunction) {
     try {

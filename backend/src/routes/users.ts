@@ -19,5 +19,6 @@ router.post('/', user.create);
 router.post('/password', user.updatePassword);
 
 router.put('/:id', user.update);
+router.delete('/:id', user.delete);
 
 export default router;
