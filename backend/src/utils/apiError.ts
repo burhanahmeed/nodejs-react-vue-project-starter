@@ -10,11 +10,19 @@ export default class ApiError extends Error {
   status: number;
   type: string;
   code: string;
-  constructor(status: number, type: string, code: string, message: string) {
+  data: object | undefined;
+  constructor(
+    status: number,
+    type: string,
+    code: string,
+    message: string,
+    data?: { [x: string]: any }
+  ) {
     super(message);
     this.status = status;
     this.type = type;
     this.code = code;
+    this.data = data;
   }
 
   toExternalResponse() {
@@ -23,6 +31,7 @@ export default class ApiError extends Error {
       type: this.type,
       message: this.message,
       code: this.code,
+      data: this.data,
     };
   }
 }

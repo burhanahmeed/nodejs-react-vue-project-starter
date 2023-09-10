@@ -23,40 +23,12 @@ module.exports = {
           },
           {
             id: 2,
-            name: 'purchasing',
+            name: 'editor',
           },
           {
             id: 3,
-            name: 'warehouse',
-          },
-          {
-            id: 4,
-            name: 'HCGA',
-          },
-          {
-            id: 5,
-            name: 'PLANT',
-          },
-          {
-            id: 6,
-            name: 'SHE',
-          },
-          {
-            id: 7,
-            name: 'PRODUKSI',
-          },
-          {
-            id: 8,
-            name: 'ENGINEERING',
-          },
-          {
-            id: 9,
-            name: 'TDC',
-          },
-          {
-            id: 10,
-            name: 'FA-LOG',
-          },
+            name: 'viewer',
+          }
         ],
         {}
       );
@@ -86,7 +58,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('users', null, {});
-    await queryInterface.bulkDelete('roles', null, {});
+    await queryInterface.bulkDelete('users', {}, {});
+    await queryInterface.bulkDelete('roles', {}, {});
   },
 };

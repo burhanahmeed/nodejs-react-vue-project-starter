@@ -6,8 +6,6 @@ import { checkAdmin } from '../middlewares/roles';
 
 const router = express.Router();
 
-router.post('/auth', user.auth);
-
 // middleware check
 router.use(checkUser);
 router.use(checkAdmin);

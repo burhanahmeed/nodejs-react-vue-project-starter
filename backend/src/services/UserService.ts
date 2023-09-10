@@ -16,13 +16,13 @@ export default class UserService {
     });
   }
 
-  public async getByEmailOrUsername(
+  public async getByEmail(
     value: string,
     opts: { withPassword?: boolean } = {}
   ) {
     const options: any = {
       where: {
-        [Op.or]: [{ email: value }, { username: value }],
+        [Op.or]: [{ email: value }],
       },
       include: ['role'],
       attibutes: { exclude: ['password'] },

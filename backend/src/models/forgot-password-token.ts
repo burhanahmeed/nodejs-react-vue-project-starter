@@ -1,7 +1,7 @@
 import { Model } from 'sequelize';
 
 const model = (sequelize: any, DataTypes: any) => {
-  class User extends Model {
+  class ForgotPasswordToken extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,31 +9,22 @@ const model = (sequelize: any, DataTypes: any) => {
      */
     static associate(models: any) {
       // define association here
-      User.belongsTo(models.Role, {
-        foreignKey: 'role_id',
-        as: 'role',
-      });
     }
   }
-  User.init(
+  ForgotPasswordToken.init(
     {
-      name: DataTypes.STRING,
-      email: {
-        type: DataTypes.STRING,
-        unique: true,
-      },
-      password: DataTypes.STRING,
-      role_id: DataTypes.INTEGER,
-      is_active: DataTypes.BOOLEAN,
+      email: DataTypes.STRING,
+      token: DataTypes.TEXT,
+      expired_at: DataTypes.BIGINT,
     },
     {
       sequelize,
       timestamps: true,
       freezeTableName: true,
-      tableName: 'users',
+      tableName: 'forgot_password_token',
     }
   );
-  return User;
+  return ForgotPasswordToken;
 };
 
 export = model;

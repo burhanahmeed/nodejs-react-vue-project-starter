@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import BaseController from './BaseController';
 import { Users } from '../services/UserService';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import Validator from 'validatorjs';
-import { JWT_KEY } from '../constants/auth';
 
 export default class UserController extends BaseController {
   public static async get(req: Request, res: Response, next: NextFunction) {
@@ -23,8 +21,6 @@ export default class UserController extends BaseController {
 
   public static async list(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log(res.locals.role);
-      
       const { page, size, search }: any = req.query;
       const resp = await Users.listWithPagination({
         search,
@@ -83,45 +79,6 @@ export default class UserController extends BaseController {
   }
 
   public static async delete(req: Request, res: Response) {}
-
-  public static async auth(req: Request, res: Response, next: NextFunction) {
-    try {
-      const resp = await Users.getByEmailOrUsername(req.body.username, {
-        withPassword: true,
-      });
-
-      if (!resp) {
-        throw new Error('Username, email, atau password salah');
-      }
-
-      const isSuccess = bcrypt.compareSync(req.body.password, resp.password);
-
-      if (!isSuccess) {
-        throw new Error('Username, email, atau password salah');
-      }
-
-      const data = {
-        id: resp.id,
-        name: resp.name,
-        username: resp.username,
-        email: resp.email,
-        role_id: resp.role_id,
-        role_name: resp.role.name,
-      };
-
-      const token = jwt.sign(data, JWT_KEY, { expiresIn: 9999999999 });
-
-      res.json({
-        status: 'success',
-        data: {
-          token,
-          ...data,
-        },
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
 
   public static async me(_req: Request, res: Response, next: NextFunction) {
     try {
