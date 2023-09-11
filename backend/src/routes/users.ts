@@ -2,23 +2,23 @@ import express from 'express';
 import user from '../controllers/UsersController';
 import role from '../controllers/RolesController';
 import { checkUser } from '../middlewares/authentication';
-import { checkAdmin } from '../middlewares/roles';
+import { useRules } from '../middlewares/roles';
+import { RULES } from '../constants/rules';
 
 const router = express.Router();
 
 // middleware check
 router.use(checkUser);
-router.use(checkAdmin);
 
-router.get('/roles', role.list);
+router.get('/roles', useRules([RULES.SUPER]), role.list);
 router.get('/me', user.me);
-router.get('/:id', user.get);
-router.get('/', user.list);
+router.get('/:id', useRules([RULES.CAN_VIEW]), user.get);
+router.get('/', useRules([RULES.CAN_VIEW]), user.list);
 
-router.post('/', user.create);
+router.post('/', useRules([RULES.CAN_CREATE]), user.create);
 router.post('/password', user.updatePassword);
 
-router.put('/:id', user.update);
-router.delete('/:id', user.delete);
+router.put('/:id', useRules([RULES.CAN_EDIT]), user.update);
+router.delete('/:id', useRules([RULES.CAN_DELETE]), user.delete);
 
 export default router;

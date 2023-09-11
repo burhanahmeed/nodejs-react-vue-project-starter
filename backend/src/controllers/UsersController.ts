@@ -3,6 +3,7 @@ import BaseController from './BaseController';
 import { Users } from '../services/UserService';
 import bcrypt from 'bcrypt';
 import Validator from 'validatorjs';
+import { ROLES } from '../constants/roles';
 
 export default class UserController extends BaseController {
   public static async get(req: Request, res: Response, next: NextFunction) {
@@ -67,6 +68,13 @@ export default class UserController extends BaseController {
       const body = { ...req.body };
       delete body.password;
 
+      const user = await Users.getById(Number(req.params.id));
+      if (!user) {
+        throw super.throwBadRequest('delete_user', 'user was not found!');
+      }
+
+      UserController.checkAuthorization(user, res.locals.role);
+
       const resp = await Users.update(Number(req.params.id), body);
 
       res.json({
@@ -84,6 +92,8 @@ export default class UserController extends BaseController {
       if (!user) {
         throw super.throwBadRequest('delete_user', 'user was not found!');
       }
+
+      UserController.checkAuthorization(user, res.locals.role);
 
       await Users.delete(Number(req.params.id));
 
@@ -121,6 +131,14 @@ export default class UserController extends BaseController {
       });
     } catch (error: any) {
       next(error);
+    }
+  }
+
+  private static checkAuthorization(targetedUser: any, authRole: string) {
+    if (authRole === ROLES.admin.name) {
+      return true;
+    } else if (authRole === ROLES.editor.name && [ROLES.admin.name, ROLES.editor.name].includes(`${targetedUser.role.name}`)) {
+      throw super.throwNotAllowed('user_auth', 'you are not allowed');
     }
   }
 
