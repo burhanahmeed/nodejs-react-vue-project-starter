@@ -18,18 +18,23 @@ export default class AuthController extends BaseController {
    */
   public static async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const resp = await Users.getByEmail(req.body.username, {
+      AuthController.validateForm(req.body, {
+        email: 'required',
+        password: 'required'
+      });
+
+      const resp = await Users.getByEmail(req.body.email.toLowerCase(), {
         withPassword: true,
       });
 
       if (!resp) {
-        throw new Error('Check again email or password!');
+        super.throwBadRequest('user_login', 'Check again email or password!');
       }
 
       const isSuccess = bcrypt.compareSync(req.body.password, resp.password);
 
       if (!isSuccess) {
-        throw new Error('Wrong email or password!');
+        super.throwBadRequest('user_login', 'Wrong email or password!');
       }
 
       const data = {
@@ -59,18 +64,19 @@ export default class AuthController extends BaseController {
       AuthController.validateForm(req.body, {
         email: 'required',
         password: 'required',
+        name: 'required'
       });
 
-      const user = await Users.getByEmail(req.body.email.toLowercase());
+      const user = await Users.getByEmail(req.body.email.toLowerCase());
       if (user) {
         throw super.throwBadRequest('sign_up', 'email is already used');
       }
 
       await Users.create({
         email: req.body.email,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password, 10),
         name: req.body.name,
-        role_id: ROLES.viewer,
+        role_id: ROLES.viewer.id,
         is_active: true,
       })
 
@@ -79,7 +85,6 @@ export default class AuthController extends BaseController {
         message: 'new user was successfully created!',
         data: {
           email: req.body.email,
-          password: req.body.password,
           name: req.body.name,
         },
       })
@@ -159,7 +164,7 @@ export default class AuthController extends BaseController {
   private static validateForm(data: any, rules: any) {
     const validation = new Validator(data, rules);
     if (validation.fails()) {
-      throw validation.errors;
+      super.throwFormValidationError('auth_validation', validation.errors.errors);
     }
 
     return true;

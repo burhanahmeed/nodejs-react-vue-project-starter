@@ -39,7 +39,6 @@ module.exports = {
           {
             name: 'Admin',
             email: 'admin@admin.com',
-            username: 'admin',
             password: bcypt.hashSync('12345', 10),
             role_id: 1,
           },
