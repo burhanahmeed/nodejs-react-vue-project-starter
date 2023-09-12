@@ -25,11 +25,11 @@ export default class UserService {
         [Op.or]: [{ email: value }],
       },
       include: ['role'],
-      attibutes: { exclude: ['password'] },
+      attributes: { exclude: ['password'] },
     };
 
     if (opts.withPassword) {
-      delete options.attibutes;
+      delete options.attributes;
     }
 
     return this.user.findOne(options);
@@ -49,9 +49,10 @@ export default class UserService {
 
     return this.user.findAndCountAll({
       where,
-      limit: opts.size,
+      limit: opts.size ? +opts.size : undefined,
       offset: opts.page && opts.size ? (opts.page - 1) * opts.size : 0,
       include: ['role'],
+      attributes: { exclude: ['password'] },
     });
   }
 

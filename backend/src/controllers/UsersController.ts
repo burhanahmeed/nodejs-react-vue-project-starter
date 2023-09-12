@@ -3,7 +3,7 @@ import BaseController from './BaseController';
 import { Users } from '../services/UserService';
 import bcrypt from 'bcrypt';
 import Validator from 'validatorjs';
-import { ROLES } from '../constants/roles';
+import { ROLES, ROLES_MAP } from '../constants/roles';
 
 export default class UserController extends BaseController {
   public static async get(req: Request, res: Response, next: NextFunction) {
@@ -44,19 +44,32 @@ export default class UserController extends BaseController {
     try {
       UserController.validateForm(req.body, {
         name: 'required',
-        username: 'required',
+        email: 'required',
         password: 'required|min:4',
         role_id: 'required',
       });
 
+      if (!ROLES_MAP[`${req.body.role_id}`]) throw super.throwBadRequest('create_user', 'Invalid role id');
+
+      UserController.checkAuthorization(ROLES_MAP[`${req.body.role_id}`], res.locals.role, [ROLES.admin.name]);
+
+      const user = await Users.getByEmail(req.body.email.toLowerCase());
+      if (user) {
+        throw super.throwBadRequest('sign_up', 'email is already used');
+      }
+
       const resp = await Users.create({
         ...req.body,
+        email: req.body.email.toLowerCase(),
         password: bcrypt.hashSync(req.body.password, 10),
       });
 
+      const response = resp.toJSON();
+      delete response.password;
+
       res.json({
         status: 'success',
-        data: resp,
+        data: response,
       });
     } catch (error: any) {
       next(error);
@@ -73,7 +86,7 @@ export default class UserController extends BaseController {
         throw super.throwBadRequest('delete_user', 'user was not found!');
       }
 
-      UserController.checkAuthorization(user, res.locals.role);
+      UserController.checkAuthorization(user.role.name, res.locals.role);
 
       const resp = await Users.update(Number(req.params.id), body);
 
@@ -93,7 +106,7 @@ export default class UserController extends BaseController {
         throw super.throwBadRequest('delete_user', 'user was not found!');
       }
 
-      UserController.checkAuthorization(user, res.locals.role);
+      UserController.checkAuthorization(user.role.name, res.locals.role);
 
       await Users.delete(Number(req.params.id));
 
@@ -134,10 +147,12 @@ export default class UserController extends BaseController {
     }
   }
 
-  private static checkAuthorization(targetedUser: any, authRole: string) {
+  private static checkAuthorization(targetedUserRole: string, authRole: string, disallowedRole?: string[]) {
+    const roles = disallowedRole || [ROLES.admin.name, ROLES.editor.name];
+
     if (authRole === ROLES.admin.name) {
       return true;
-    } else if (authRole === ROLES.editor.name && [ROLES.admin.name, ROLES.editor.name].includes(`${targetedUser.role.name}`)) {
+    } else if (authRole === ROLES.editor.name && roles.includes(`${targetedUserRole}`)) {
       throw super.throwNotAllowed('user_auth', 'you are not allowed');
     }
   }
@@ -145,7 +160,7 @@ export default class UserController extends BaseController {
   private static validateForm(data: any, rules: any) {
     const validation = new Validator(data, rules);
     if (validation.fails()) {
-      throw validation.errors;
+      super.throwFormValidationError('auth_validation', validation.errors.errors);
     }
 
     return true;
