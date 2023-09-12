@@ -1,3 +1,4 @@
+import { IFindOptions } from "../types/base";
 import ApiError from "../utils/apiError";
 import FormValidationError from '../utils/formValidationError';
 
@@ -8,6 +9,17 @@ export default class BaseController {
     const totalPages = Math.ceil(totalItems / limit);
 
     return { totalItems, data: rows, totalPages, currentPage };
+  }
+
+  public static buildPaginationOpts(page: number, size: number) {
+    if (page && size) {
+      return {
+        limit: size,
+        offset: page && size ? (page - 1) * size : 0,
+      };
+    }
+
+    return {};
   }
 
   public static throwNotFoundError(code: string, message: string, data?: any) {

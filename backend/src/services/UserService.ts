@@ -1,5 +1,6 @@
 import { ModelStatic, Op } from 'sequelize';
 import db from '../models';
+import { IFindOptions } from '../types/base';
 
 export default class UserService {
   private user: ModelStatic<any>;
@@ -35,22 +36,21 @@ export default class UserService {
     return this.user.findOne(options);
   }
 
-  public listWithPagination(opts: { search?: string; page?: number; size?: number }) {
+  public listWithPagination(opts: IFindOptions) {
     const where = {};
-    if (opts.search) {
+    if (opts?.filters?.search) {
       Object.assign(where, {
         [Op.or]: [
-          { email: { [Op.like]: `%${opts.search}%` } },
-          { username: { [Op.like]: `%${opts.search}%` } },
-          { name: { [Op.like]: `%${opts.search}%` } },
+          { email: { [Op.like]: `%${opts?.filters?.search}%` } },
+          { name: { [Op.like]: `%${opts?.filters?.search}%` } },
         ],
       });
     }
 
     return this.user.findAndCountAll({
       where,
-      limit: opts.size ? +opts.size : undefined,
-      offset: opts.page && opts.size ? (opts.page - 1) * opts.size : 0,
+      limit: opts.limit,
+      offset: opts.offset,
       include: ['role'],
       attributes: { exclude: ['password'] },
     });

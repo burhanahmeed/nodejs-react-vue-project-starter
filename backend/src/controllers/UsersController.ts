@@ -4,6 +4,7 @@ import { Users } from '../services/UserService';
 import bcrypt from 'bcrypt';
 import Validator from 'validatorjs';
 import { ROLES, ROLES_MAP } from '../constants/roles';
+import { IFindOptions } from '../types/base';
 
 export default class UserController extends BaseController {
   public static async get(req: Request, res: Response, next: NextFunction) {
@@ -22,12 +23,10 @@ export default class UserController extends BaseController {
 
   public static async list(req: Request, res: Response, next: NextFunction) {
     try {
-      const { page, size, search }: any = req.query;
-      const resp = await Users.listWithPagination({
-        search,
-        page,
-        size,
-      });
+      const { page, size }: any = req.query;
+      const opts = UserController.getOpts(req);
+      const pagination = super.buildPaginationOpts(Number(page), Number(size))
+      const resp = await Users.listWithPagination({ ...opts, ...pagination });
 
       const result = UserController.getPagingData(resp, page || 1, size || 25);
 
@@ -164,5 +163,13 @@ export default class UserController extends BaseController {
     }
 
     return true;
+  }
+
+  static getOpts(req: Request): IFindOptions {
+    const { search }: any = req.query;
+
+    return {
+      filters: { search }
+    }
   }
 }
