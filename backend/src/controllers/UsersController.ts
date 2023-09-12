@@ -11,6 +11,9 @@ export default class UserController extends BaseController {
     try {
       const { id }: any = req.params;
       const resp = await Users.getById(id);
+      if (!resp) {
+        super.throwNotFoundError('get_user', 'user was not found');
+      }
 
       res.json({
         status: 'success',
@@ -80,12 +83,14 @@ export default class UserController extends BaseController {
       const body = { ...req.body };
       delete body.password;
 
+      if (!ROLES_MAP[`${req.body.role_id}`]) throw super.throwBadRequest('update_user', 'Invalid role id');
+
       const user = await Users.getById(Number(req.params.id));
       if (!user) {
         throw super.throwBadRequest('delete_user', 'user was not found!');
       }
 
-      UserController.checkAuthorization(user.role.name, res.locals.role);
+      UserController.checkAuthorization(ROLES_MAP[`${req.body.role_id}`], res.locals.role);
 
       const resp = await Users.update(Number(req.params.id), body);
 
