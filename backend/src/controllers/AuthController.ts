@@ -7,7 +7,7 @@ import { Auth } from '../services/AuthService';
 import { JWT_KEY } from '../constants/auth';
 import Validator from 'validatorjs';
 import { ROLES } from '../constants/roles';
-import mailtrap from '../utils/mailtrap';
+import mailtrap, {SENDER_EMAIL, SENDER_NAME} from '../utils/mailtrap';
 
 export default class AuthController extends BaseController {
   /**
@@ -108,7 +108,7 @@ export default class AuthController extends BaseController {
 
       // send email here
       await mailtrap.send({
-        from: { name: "NodeJS Test", email: 'example@gmail.com' },
+        from: { name: SENDER_NAME, email: SENDER_EMAIL },
         to: [{ email: req.body.email }],
         subject: "Forgot password email!",
         text: `You can reset your password here http://front-end-localhost:8000/reset-password?token=${token}`,
