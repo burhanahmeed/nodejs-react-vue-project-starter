@@ -99,13 +99,15 @@ export default class AuthController extends BaseController {
         email: 'required'
       });
 
-      const user = await Users.getByEmail(req.body.email.toLowercase());
+      const user = await Users.getByEmail(req.body.email.toLowerCase());
       if (!user) {
         throw super.throwBadRequest('forgot_password', 'email was not found!');
       }
 
       const token = await Auth.createForgotToken(req.body.email);
 
+      console.log(token);
+      
       // send email here
       await mailtrap.send({
         from: { name: SENDER_NAME, email: SENDER_EMAIL },
