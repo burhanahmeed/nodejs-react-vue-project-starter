@@ -28,9 +28,14 @@ export default class FilesController extends BaseController {
     }
   }
 
-  public static list(req: Request, res: Response, next: NextFunction) {
+  public static async list(req: Request, res: Response, next: NextFunction) {
     try {
-      
+      const filters: any = {}
+      if (req.query.name) {
+        filters.search = req.query.name;
+      }
+
+      await File.listAll({ filters });
     } catch (error) {
       next(error);
     }

@@ -45,7 +45,12 @@ export default class FileService {
   }
 
   listAll(opts: IFindOptions) {
-    return this.file.findAll({ where: { email: { [Op.like]: `%${opts?.filters?.search}%` } } });
+    const where = {};
+    if (opts?.filters?.search) {
+      Object.assign(where, { name: { [Op.like]: `%${opts?.filters?.search}%` } });
+    }
+
+    return this.file.findAll({ where });
   }
 }
 
