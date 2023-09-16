@@ -43,6 +43,14 @@ export default class FilesController extends BaseController {
 
   public static async update(req: Request, res: Response, next: NextFunction) {
     try {
+      FilesController.validateForm(req.body, {
+        name: 'required'
+      });
+
+      if (req.file) {
+        req.body.image_path = req.file.filename;
+      }
+
       await File.updateByIdIfExist(Number(req.params.id), req.body);
 
       res.json({
