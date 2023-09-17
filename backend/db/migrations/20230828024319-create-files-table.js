@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      images_path: {
+      image_path: {
         type: Sequelize.TEXT,
       },
       createdAt: {

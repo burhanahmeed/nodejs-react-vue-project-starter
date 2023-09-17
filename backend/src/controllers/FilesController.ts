@@ -14,14 +14,15 @@ export default class FilesController extends BaseController {
         throw super.throwBadRequest('create_file', 'Image must be exist');
       }
 
-      await File.store({
+      const created = await File.store({
         ...req.body,
         image_path: req.file.filename
       });
 
       res.json({
         success: true,
-        message: 'File has been stored'
+        message: 'File has been stored',
+        data: { id: created.id }
       });
     } catch (error) {
       next(error);
@@ -35,7 +36,13 @@ export default class FilesController extends BaseController {
         filters.search = req.query.name;
       }
 
-      await File.listAll({ filters });
+      const data = await File.listAll({ filters });
+
+      res.json({
+        success: true,
+        message: 'File has been fetched',
+        data
+      });
     } catch (error) {
       next(error);
     }
