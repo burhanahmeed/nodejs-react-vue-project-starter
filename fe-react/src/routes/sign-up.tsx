@@ -1,4 +1,45 @@
+import { useState } from "react";
+import authApi from "../apis/auth";
+import { useNavigate } from "react-router-dom";
+
 export default function SignUp() {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if (name === '' || email === '' || password === '') {
+      alert('Please fill name, email, and password');
+      return false;
+    }
+
+    try {
+      const resp: any = await authApi.signup(name, email, password);
+      alert(resp.message);
+      
+      navigate('/login');
+    } catch (error) {
+      alert(error?.response?.data?.error?.message);
+    }
+  };
+
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -13,7 +54,7 @@ export default function SignUp() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleRegister}>
           <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Name
@@ -23,6 +64,8 @@ export default function SignUp() {
                   id="name"
                   name="name"
                   type="name"
+                  value={name}
+                  onChange={handleNameChange}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -38,6 +81,8 @@ export default function SignUp() {
                   id="email"
                   name="email"
                   type="email"
+                  value={email}
+                  onChange={handleEmailChange}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -55,6 +100,8 @@ export default function SignUp() {
                   id="password"
                   name="password"
                   type="password"
+                  value={password}
+                  onChange={handlePasswordChange}
                   autoComplete="current-password"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

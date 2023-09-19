@@ -7,5 +7,12 @@ export default {
         .then((res: any) => resolve(res.data))
         .catch((err) => reject(err));
     })
+  },
+  signup: (name: string, email: string, password: string) => {
+    return new Promise((res, rej) => {
+      request.post('/auth/register', { name, email, password })
+        .then((resp: any) => res(resp.data))
+        .catch((err) => rej(err));
+    })
   }
 }
