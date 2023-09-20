@@ -1,7 +1,10 @@
 import { useState } from "react"
 import authApi from "../apis/auth";
+import withAuth from "../hoc/withAuth";
 
-export default function Login() { 
+export default withAuth(Login, 'non-protected');
+
+function Login() { 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 

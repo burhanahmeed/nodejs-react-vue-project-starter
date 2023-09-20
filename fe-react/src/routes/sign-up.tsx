@@ -1,8 +1,10 @@
 import { useState } from "react";
 import authApi from "../apis/auth";
 import { useNavigate } from "react-router-dom";
+import withAuth from "../hoc/withAuth";
 
-export default function SignUp() {
+export default withAuth(SignUp, 'non-protected');
+function SignUp() {
   const navigate = useNavigate();
 
   const [name, setName] = useState('')
