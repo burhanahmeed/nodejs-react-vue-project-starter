@@ -1,10 +1,15 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import authApi from "../apis/auth";
 import withAuth from "../hoc/withAuth";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router";
 
 export default withAuth(Login, 'non-protected');
 
-function Login() { 
+function Login() {
+  const { makeLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
+ 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -25,10 +30,11 @@ function Login() {
     }
 
     try {
-      const resp = await authApi.login(email, password);
-      console.log(resp);
-      
-    } catch (error) {     
+      const resp: any = await authApi.login(email, password);
+
+      makeLogin(resp.data.token);
+      navigate('/');
+    } catch (error) {
       alert(error?.response?.data?.error?.message);
     }
   };

@@ -1,8 +1,9 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 
 interface AuthContextProps {
   token: string|null;
-  setToken: Function
+  makeLogin: Function,
+  makeLogout: Function
 }
 
 interface AuthProps {
@@ -12,11 +13,29 @@ interface AuthProps {
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 const AuthProvider = ({ children }: AuthProps) => {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState<string|null>(null);
+
+  const makeLogin = (tkn: string) => {
+    setToken(tkn);
+    window.localStorage.setItem('access_token', tkn);
+  }
+
+  const makeLogout = () => {
+    setToken(null);
+    window.localStorage.removeItem('access_token');
+  }
+
+  useEffect(() => {
+    const tkn = window.localStorage.getItem('access_token');
+    if (tkn) {
+      setToken(tkn);
+    }
+  }, []);
 
   const value = {
     token,
-    setToken
+    makeLogin,
+    makeLogout
   };
 
   return (

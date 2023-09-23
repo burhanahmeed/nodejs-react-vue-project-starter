@@ -23,7 +23,6 @@ function SignUp() {
     setPassword(e.target.value);
   };
 
-
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
