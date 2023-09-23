@@ -1,11 +1,13 @@
 import { useContext } from "react";
 import withAuth from "../hoc/withAuth";
 import { AuthContext } from "../context/AuthContext";
-import { redirect } from "react-router-dom";
+import { redirect, Outlet, useLocation } from "react-router-dom";
 
 export default withAuth(Root, 'protected');
 function Root() {
   const { makeLogout } = useContext(AuthContext);
+  let location = useLocation();
+
   const handleLogout = () => {
     makeLogout();
     redirect('/login');
@@ -33,7 +35,8 @@ function Root() {
         </nav>
       </div>
       <div id="detail">
-        Welcome to tutorial ReactJS Node Express
+        {location.pathname === '/' && 'Welcome to tutorial ReactJS Node Express'}
+        <Outlet />
       </div>
     </>
   );

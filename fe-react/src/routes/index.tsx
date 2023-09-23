@@ -5,6 +5,7 @@ import {
 import Home from './home';
 import Login from './login';
 import SignUp from './sign-up';
+import Users from './users';
 
 import ErrorPage from "../error-page";
 
@@ -28,8 +29,14 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-    errorElement: <ErrorPage />
-  }
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "users",
+        element: <Users />,
+      },
+    ]
+  },
 ]);
 
 export default router;
