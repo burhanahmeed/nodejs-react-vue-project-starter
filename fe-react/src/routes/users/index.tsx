@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import { useEffect, useState } from "react";
 import usersApi from "../../apis/users";
 import { useDebounce } from "../../hooks/useDebounce";
+import { Link } from "react-router-dom";
 
 export default withAuth(UsersIndex, 'protected');
 function UsersIndex () {
@@ -28,6 +29,19 @@ function UsersIndex () {
     }
   }
 
+  const handleDelete = async (id: number) => {
+    try {
+      if (confirm('are you sure want to delete this user')) {
+        await usersApi.delete(id);
+        alert('user has been deleted');
+
+        await fetchData();
+      }
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+  }
+
   useEffect(() => {
     fetchData();
   }, [currentPage, debouncedValue]);
@@ -35,7 +49,7 @@ function UsersIndex () {
   return (
     <>
       <div className="py-4 flex justify-between">
-        <Button className="text-xs" text="Add New User" onClick={() => {}} />
+        <Link className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300" to={'/users/add'}>Add new user</Link>
         <input
           placeholder="Search"
           aria-label="Search"
@@ -85,7 +99,7 @@ function UsersIndex () {
                       </td>
                       <td className="px-6 py-4">
                         <Button className="text-xs bg-gray-500 text-white" text="Edit" onClick={() => {}} />
-                        <Button className="text-xs bg-red-500 text-white" text="Delete" onClick={() => {}} />
+                        <Button className="text-xs bg-red-500 text-white" text="Delete" onClick={() => handleDelete(e.id)} />
                       </td>
                     </tr>
                   )
