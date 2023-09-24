@@ -1,90 +1,92 @@
-import { Form } from "react-router-dom";
+import withAuth from "../../hoc/withAuth";
+import Button from '../../components/common/Button';
+import ReactPaginate from 'react-paginate';
 
-export default function Contact() {
-  const contact = {
-    first: "Your",
-    last: "Name",
-    avatar: "https://placekitten.com/g/200/200",
-    twitter: "your_handle",
-    notes: "Some notes",
-    favorite: true,
-  };
-
+export default withAuth(UsersIndex, 'protected');
+function UsersIndex () {
   return (
-    <div id="contact">
-      <div>
-        <img
-          key={contact.avatar}
-          src={contact?.avatar}
-        />
+    <>
+      <div className="py-4">
+        <Button text="Add New User" onClick={() => {}} />
       </div>
-
-      <div>
-        <h1>
-          {contact.first || contact.last ? (
-            <>
-              {contact.first} {contact.last}
-            </>
-          ) : (
-            <i>No Name</i>
-          )}{" "}
-          <Favorite contact={contact} />
-        </h1>
-
-        {contact.twitter && (
-          <p>
-            <a
-              target="_blank"
-              href={`https://twitter.com/${contact.twitter}`}
-            >
-              {contact.twitter}
-            </a>
-          </p>
-        )}
-
-        {contact.notes && <p>{contact.notes}</p>}
-
-        <div>
-          <Form action="edit">
-            <button type="submit">Edit</button>
-          </Form>
-          <Form
-            method="post"
-            action="destroy"
-            onSubmit={(event) => {
-              if (
-                !confirm(
-                  "Please confirm you want to delete this record."
-                )
-              ) {
-                event.preventDefault();
-              }
-            }}
-          >
-            <button type="submit">Delete</button>
-          </Form>
-        </div>
+      <div className="relative overflow-x-auto">
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                      <th scope="col" className="px-6 py-3">
+                          Product name
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                          Color
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                          Category
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                          Price
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                          Apple MacBook Pro 17"
+                      </th>
+                      <td className="px-6 py-4">
+                          Silver
+                      </td>
+                      <td className="px-6 py-4">
+                          Laptop
+                      </td>
+                      <td className="px-6 py-4">
+                          $2999
+                      </td>
+                  </tr>
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                          Microsoft Surface Pro
+                      </th>
+                      <td className="px-6 py-4">
+                          White
+                      </td>
+                      <td className="px-6 py-4">
+                          Laptop PC
+                      </td>
+                      <td className="px-6 py-4">
+                          $1999
+                      </td>
+                  </tr>
+                  <tr className="bg-white dark:bg-gray-800">
+                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                          Magic Mouse 2
+                      </th>
+                      <td className="px-6 py-4">
+                          Black
+                      </td>
+                      <td className="px-6 py-4">
+                          Accessories
+                      </td>
+                      <td className="px-6 py-4">
+                          $99
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="next"
+            onPageChange={() => {}}
+            pageRangeDisplayed={3}
+            pageCount={30}
+            previousLabel="previous"
+            renderOnZeroPageCount={null}
+            className="inline-flex -space-x-px text-sm"
+            pageLinkClassName="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            breakClassName="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300"
+            nextClassName="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            previousClassName="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          />
       </div>
-    </div>
-  );
-}
-
-function Favorite({ contact }: any) {
-  // yes, this is a `let` for later
-  let favorite = contact.favorite;
-  return (
-    <Form method="post">
-      <button
-        name="favorite"
-        value={favorite ? "false" : "true"}
-        aria-label={
-          favorite
-            ? "Remove from favorites"
-            : "Add to favorites"
-        }
-      >
-        {favorite ? "★" : "☆"}
-      </button>
-    </Form>
-  );
+    </>
+  )
 }
