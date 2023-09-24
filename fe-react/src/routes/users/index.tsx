@@ -3,7 +3,7 @@ import Button from '../../components/common/Button';
 import ReactPaginate from 'react-paginate';
 import { useEffect, useState } from "react";
 import usersApi from "../../apis/users";
-import { useDebounce } from "../../utils/debounce";
+import { useDebounce } from "../../hooks/useDebounce";
 
 export default withAuth(UsersIndex, 'protected');
 function UsersIndex () {
