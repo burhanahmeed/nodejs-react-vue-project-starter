@@ -7,6 +7,8 @@ import Login from './login';
 import SignUp from './sign-up';
 import Users from './users';
 import UsersAdd from './users/add';
+import UsersEdit from './users/edit';
+import Roles from './roles';
 
 import ErrorPage from "../error-page";
 
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
       {
         path: "users/add",
         element: <UsersAdd />,
+      },
+      {
+        path: "users/:id",
+        element: <UsersEdit />,
+      },
+      {
+        path: "roles",
+        element: <Roles />,
       },
     ]
   },

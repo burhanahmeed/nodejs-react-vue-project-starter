@@ -66,7 +66,7 @@ function AddUser() {
           </select>
         </div>
         <div className="mb-6">
-          <button type="submit" className="bg-green-500 text-white">Submit</button>
+          <button type="submit" className="bg-green-500 text-white">Update</button>
         </div>
       </form>
     </>

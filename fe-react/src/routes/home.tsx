@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import withAuth from "../hoc/withAuth";
 import { AuthContext } from "../context/AuthContext";
-import { redirect, Outlet, useLocation } from "react-router-dom";
+import { redirect, Outlet, useLocation, Link } from "react-router-dom";
 
 export default withAuth(Root, 'protected');
 function Root() {
@@ -20,13 +20,13 @@ function Root() {
         <nav>
           <ul>
             <li>
-              <a href={'/users'}>Users</a>
+              <Link to={'/users'}>Users</Link>
             </li>
             <li>
-              <a href={'/roles'}>Roles</a>
+              <Link to={'/roles'}>Roles</Link>
             </li>
             <li>
-              <a href={'/files'}>Files</a>
+              <Link to={'/files'}>Files</Link>
             </li>
             <li>
               <a className="bg-red-500 text-white text-center" style={{color: 'white'}} href={'/#'} onClick={() => handleLogout()}>Logout</a>

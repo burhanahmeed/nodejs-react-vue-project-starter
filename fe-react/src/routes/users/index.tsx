@@ -98,7 +98,7 @@ function UsersIndex () {
                         {e.role.name}
                       </td>
                       <td className="px-6 py-4">
-                        <Button className="text-xs bg-gray-500 text-white" text="Edit" onClick={() => {}} />
+                        <Link className="flex items-center justify-center px-3 h-8 text-xs bg-gray-500 text-white" to={`/users/${e.id}`}>Edit</Link>
                         <Button className="text-xs bg-red-500 text-white" text="Delete" onClick={() => handleDelete(e.id)} />
                       </td>
                     </tr>
