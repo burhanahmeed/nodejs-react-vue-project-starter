@@ -15,6 +15,13 @@ export default {
         .catch((err) => reject(err));
     });
   },
+  getById: (id: number) => {
+    return new Promise((resolve, reject) => {
+      request.get('/users/' + id)
+        .then((res: any) => resolve(res.data))
+        .catch((err) => reject(err));
+    });
+  },
   delete: (id: number) => {
     return new Promise((resolve, reject) => {
       request.delete('/users/' + id)

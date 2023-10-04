@@ -2,17 +2,17 @@ import { useEffect, useState, FormEvent } from "react";
 import withAuth from "../../hoc/withAuth"
 import rolesApi from "../../apis/roles";
 import usersApi from "../../apis/users";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default withAuth(AddUser, 'protected');
 function AddUser() {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [roles, setRoles] = useState([]);
   const [form, setForm] = useState({
     name: '',
     email: '',
-    password: '',
     role_id: 1
   })
 
@@ -28,6 +28,11 @@ function AddUser() {
     setRoles(resp.data);
   }
 
+  const fetchUser = async () => {
+    const resp: any = await usersApi.getById(Number(id));
+    setForm(resp.data);
+  }
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -38,6 +43,12 @@ function AddUser() {
       alert(error);
     }
   }
+
+  useEffect(() => {
+    if (id) {
+      fetchUser();
+    }
+  }, [id])
 
   useEffect(() => {
     fetchRole();
@@ -52,10 +63,6 @@ function AddUser() {
         <div className="mb-6">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
           <input onChange={handleChange} value={form.email} type="email" name="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required />
-        </div>
-        <div className="mb-6">
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-          <input onChange={handleChange} value={form.password} type="password" name="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="*******" required />
         </div>
         <div className="mb-6">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>

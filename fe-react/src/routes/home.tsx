@@ -6,7 +6,7 @@ import { redirect, Outlet, useLocation, Link } from "react-router-dom";
 export default withAuth(Root, 'protected');
 function Root() {
   const { makeLogout } = useContext(AuthContext);
-  let location = useLocation();
+  const location = useLocation();
 
   const handleLogout = () => {
     makeLogout();
