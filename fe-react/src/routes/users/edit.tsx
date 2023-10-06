@@ -36,7 +36,7 @@ function AddUser() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await usersApi.create(form);
+      await usersApi.updateById(Number(id), form);
 
       navigate(-1);
     } catch (error) {

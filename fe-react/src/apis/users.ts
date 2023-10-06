@@ -15,6 +15,13 @@ export default {
         .catch((err) => reject(err));
     });
   },
+  updateById: (id: number, payload: any) => {
+    return new Promise((resolve, reject) => {
+      request.put('/users/' + id, payload)
+        .then((res: any) => resolve(res.data))
+        .catch((err) => reject(err));
+    });
+  },
   getById: (id: number) => {
     return new Promise((resolve, reject) => {
       request.get('/users/' + id)
