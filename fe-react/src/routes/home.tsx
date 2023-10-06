@@ -1,17 +1,28 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import withAuth from "../hoc/withAuth";
 import { AuthContext } from "../context/AuthContext";
 import { redirect, Outlet, useLocation, Link } from "react-router-dom";
+import authApi from '../apis/auth';
 
 export default withAuth(Root, 'protected');
 function Root() {
   const { makeLogout } = useContext(AuthContext);
   const location = useLocation();
+  const [user, setUser] = useState<any>({});
 
   const handleLogout = () => {
     makeLogout();
     redirect('/login');
   }
+
+  const fetchUserLogin = async () => {
+    const resp: any = await authApi.me();
+    setUser(resp.data)
+  }
+
+  useEffect(() => {
+    fetchUserLogin();
+  }, [])
 
   return (
     <>
@@ -35,7 +46,14 @@ function Root() {
         </nav>
       </div>
       <div id="detail">
-        {location.pathname === '/' && 'Welcome to tutorial ReactJS Node Express'}
+        {location.pathname === '/' && (
+          <div>
+            <p>'Welcome to tutorial ReactJS Node Express'</p>
+            <p>Name: {user.name}</p>
+            <p>Email: {user.email}</p>
+            <p>Role: {user?.role?.name}</p>
+          </div>
+        )}
         <Outlet />
       </div>
     </>

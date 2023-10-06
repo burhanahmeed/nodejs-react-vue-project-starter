@@ -35,5 +35,5 @@ export default {
         .then((res: any) => resolve(res.data))
         .catch((err) => reject(err));
     });
-  }
+  },
 }

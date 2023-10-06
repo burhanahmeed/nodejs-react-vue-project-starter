@@ -14,5 +14,12 @@ export default {
         .then((resp: any) => res(resp.data))
         .catch((err) => rej(err));
     })
+  },
+  me: () => {
+    return new Promise((resolve, reject) => {
+      request.get('/users/me')
+        .then((res: any) => resolve(res.data))
+        .catch((err) => reject(err));
+    });
   }
 }
