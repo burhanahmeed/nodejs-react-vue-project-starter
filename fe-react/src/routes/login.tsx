@@ -2,14 +2,13 @@ import { useContext, useState } from "react"
 import authApi from "../apis/auth";
 import withAuth from "../hoc/withAuth";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export default withAuth(Login, 'non-protected');
 
 function Login() {
   const { makeLogin } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams()
  
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -34,7 +33,12 @@ function Login() {
       const resp: any = await authApi.login(email, password);
 
       makeLogin(resp.data.token);
-      navigate('/');
+
+      if (searchParams.get('redirect')) {
+        window.location.href = searchParams.get('redirect') as string;
+      }
+
+      window.location.href = '/login';
     } catch (error) {
       alert(error?.response?.data?.error?.message);
     }
