@@ -1,5 +1,5 @@
 // withAuth.tsx
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { FullPageLoading } from '../components/common/FullPageLoading';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
@@ -16,23 +16,32 @@ const withAuth = <P extends object>(
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const location = useLocation();
+    const [init, setInit] = useState(true);
 
     useEffect(() => {
       // Perform authentication check and redirect if not logged in
-      if (RouteRole === 'non-protected') {
-        if (token) {
-          if (searchParams.get('redirect')) {
-            navigate(searchParams.get('redirect') as string);
-          } else {
-            navigate(HOME_PAGE); // Redirect to the login page or any other non-protected page
+      if (!init) {
+        if (RouteRole === 'non-protected') {
+          if (token) {
+            if (searchParams.get('redirect')) {
+              navigate(searchParams.get('redirect') as string);
+            } else {
+              navigate(HOME_PAGE); // Redirect to the login page or any other non-protected page
+            }
+          }
+        } else if (RouteRole === 'protected') {
+          if (!token) {
+            navigate(`${LOGIN_PAGE}?redirect=${location.pathname}`); // Redirect to the login page or any other non-protected page
           }
         }
-      } else if (RouteRole === 'protected') {
-        if (!token) {
-          navigate(`${LOGIN_PAGE}?redirect=${location.pathname}`); // Redirect to the login page or any other non-protected page
-        }
       }
-    }, [token]);
+
+      setInit(false);
+    }, [token, init]);
+
+    useEffect(() => setInit(false), []);
+    console.log(init, token, RouteRole);
+    
 
     if (!token && RouteRole !== 'non-protected') {
       // You can render a loading spinner or any other loading indicator
