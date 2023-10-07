@@ -5,6 +5,8 @@ import {
 import Home from './home';
 import Login from './login';
 import SignUp from './sign-up';
+import ForgotPassword from './forgot-password';
+import ResetPassword from './reset-password';
 import Users from './users';
 import UsersAdd from './users/add';
 import UsersEdit from './users/edit';
@@ -23,11 +25,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/forgot-password",
-    element: '<div>Hello world</div>',
+    element: <ForgotPassword />,
   },
   {
     path: "/reset-password",
-    element: '<div>Hello world</div>',
+    element: <ResetPassword />,
   },
   {
     path: "/",

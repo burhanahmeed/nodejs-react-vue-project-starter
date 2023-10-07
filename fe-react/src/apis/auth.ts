@@ -21,5 +21,19 @@ export default {
         .then((res: any) => resolve(res.data))
         .catch((err) => reject(err));
     });
+  },
+  forgotPassword: (email: string) => {
+    return new Promise((resolve, reject) => {
+      request.post('/auth/forgot-password', { email })
+        .then((res: any) => resolve(res.data))
+        .catch((err) => reject(err));
+    });
+  },
+  resetPassword: (password: string, token: string) => {
+    return new Promise((resolve, reject) => {
+      request.post('/auth/reset-password', { password }, { params: { token }})
+        .then((res: any) => resolve(res.data))
+        .catch((err) => reject(err));
+    });
   }
 }

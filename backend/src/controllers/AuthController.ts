@@ -109,12 +109,12 @@ export default class AuthController extends BaseController {
       console.log(token);
       
       // send email here
-      await mailtrap.send({
-        from: { name: SENDER_NAME, email: SENDER_EMAIL },
-        to: [{ email: req.body.email }],
-        subject: "Forgot password email!",
-        text: `You can reset your password here http://front-end-localhost:8000/reset-password?token=${token}`,
-      });
+      // await mailtrap.send({
+      //   from: { name: SENDER_NAME, email: SENDER_EMAIL },
+      //   to: [{ email: req.body.email }],
+      //   subject: "Forgot password email!",
+      //   text: `You can reset your password here http://front-end-localhost:8000/reset-password?token=${token}`,
+      // });
 
       res.json({
         status: 'success',
