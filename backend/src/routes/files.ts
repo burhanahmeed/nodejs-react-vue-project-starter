@@ -13,6 +13,7 @@ router.use(checkUser);
 router.post('/', useRules([RULES.CAN_CREATE]), uploaderDiskMiddleware.single('image'), file.create);
 router.post('/:id', useRules([RULES.CAN_CREATE, RULES.CAN_EDIT]), uploaderDiskMiddleware.single('image'), file.update);
 router.get('/', file.list);
+router.get('/:id', file.getById);
 router.delete('/:id', useRules([RULES.CAN_DELETE]), file.delete);
 
 export default router;

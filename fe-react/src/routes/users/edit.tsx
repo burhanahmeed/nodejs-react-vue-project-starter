@@ -4,8 +4,8 @@ import rolesApi from "../../apis/roles";
 import usersApi from "../../apis/users";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default withAuth(AddUser, 'protected');
-function AddUser() {
+export default withAuth(EditUser, 'protected');
+function EditUser() {
   const navigate = useNavigate();
   const { id } = useParams();
 

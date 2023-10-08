@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import Validator from 'validatorjs';
 import BaseController from './BaseController';
 import { File } from "../services/FileService";
+import { BASE_URL } from '../config/common';
 
 export default class FilesController extends BaseController {
   public static async create(req: Request, res: Response, next: NextFunction) {
@@ -42,6 +43,26 @@ export default class FilesController extends BaseController {
         success: true,
         message: 'File has been fetched',
         data
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public static async getById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await File.getById(Number(req.params.id));
+      if (!data) {
+        super.throwNotFoundError('get_file', 'file was not found');
+      }
+
+      res.json({
+        success: true,
+        message: 'File has been fetched',
+        data: {
+          ...data.toJSON(),
+          previewImage: `${BASE_URL}/uploads/${data.image_path}`
+        }
       });
     } catch (error) {
       next(error);

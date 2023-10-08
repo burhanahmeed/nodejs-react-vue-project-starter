@@ -13,6 +13,7 @@ import UsersEdit from './users/edit';
 import Roles from './roles';
 import Files from './files';
 import FilesAdd from './files/add';
+import FilesEdit from './files/edit';
 
 import ErrorPage from "../error-page";
 
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "files/add",
         element: <FilesAdd />,
+      },
+      {
+        path: "files/:id",
+        element: <FilesEdit />,
       },
     ]
   },
