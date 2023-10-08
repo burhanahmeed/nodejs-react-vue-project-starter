@@ -40,8 +40,6 @@ const withAuth = <P extends object>(
     }, [token, init]);
 
     useEffect(() => setInit(false), []);
-    console.log(init, token, RouteRole);
-    
 
     if (!token && RouteRole !== 'non-protected') {
       // You can render a loading spinner or any other loading indicator

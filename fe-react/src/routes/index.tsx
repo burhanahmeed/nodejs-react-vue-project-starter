@@ -11,6 +11,7 @@ import Users from './users';
 import UsersAdd from './users/add';
 import UsersEdit from './users/edit';
 import Roles from './roles';
+import Files from './files';
 
 import ErrorPage from "../error-page";
 
@@ -51,6 +52,14 @@ const router = createBrowserRouter([
       {
         path: "roles",
         element: <Roles />,
+      },
+      {
+        path: "files",
+        element: <Files />,
+      },
+      {
+        path: "files/add",
+        element: <UsersAdd />,
       },
     ]
   },

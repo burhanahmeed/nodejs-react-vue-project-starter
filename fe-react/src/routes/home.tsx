@@ -30,13 +30,13 @@ function Root() {
         <h1>Tutorials</h1>
         <nav>
           <ul>
-            <li>
+            <li className={location.pathname === '/users' ? 'bg-gray-200' : ''}>
               <Link to={'/users'}>Users</Link>
             </li>
-            <li>
+            <li className={location.pathname === '/roles' ? 'bg-gray-200' : ''}>
               <Link to={'/roles'}>Roles</Link>
             </li>
-            <li>
+            <li className={location.pathname === '/files' ? 'bg-gray-200' : ''}>
               <Link to={'/files'}>Files</Link>
             </li>
             <li>
