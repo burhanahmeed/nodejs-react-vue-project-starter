@@ -1,3 +1,4 @@
+import fs from  'fs'
 import { ModelStatic, Op } from 'sequelize';
 import db from '../models';
 import { IFindOptions } from '../types/base';
@@ -16,9 +17,17 @@ export default class FileService {
 
   async updateByIdIfExist(id: number, payload: any) {
     try {
-      const file = this.getById(id);
+      const file: any = await this.getById(id);
       if (!file) {
         throw new ApiError(404, 'not_found', 'file_service', 'file you requested does not exist');
+      }
+
+      const filePath = `public/uploads/${file.image_path}`;
+      
+      // Check if the file to be replaced exists
+      if (fs.existsSync(filePath)) {
+        // Delete the old file
+        fs.unlinkSync(filePath);
       }
 
       return this.file.update(payload, { where: { id } });
@@ -31,11 +40,19 @@ export default class FileService {
     return this.file.findOne({ where: { id } });
   }
 
-  deleteByIdIfExist(id: number) {
+  async deleteByIdIfExist(id: number) {
     try {
-      const file = this.getById(id);
+      const file = await this.getById(id);
       if (!file) {
         throw new ApiError(404, 'not_found', 'delete_file_service', 'file you requested does not exist');
+      }
+
+      const filePath = `public/uploads/${file.image_path}`;
+      
+      // Check if the file to be replaced exists
+      if (fs.existsSync(filePath)) {
+        // Delete the old file
+        fs.unlinkSync(filePath);
       }
 
       return this.file.destroy({ where: { id } });
