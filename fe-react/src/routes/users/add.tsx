@@ -41,7 +41,8 @@ function AddUser() {
 
   useEffect(() => {
     fetchRole();
-  }, [])
+  }, []);
+
   return (
     <>
       <form onSubmit={handleSubmit}>
