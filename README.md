@@ -3,7 +3,7 @@
 <br />
 
 <div style="font-size: 26px;" align="center"><strong>ExpressJS + React + Vue Project Starter</strong></div>
-<div align="center">A basic ExpressJS, ReactJS, VueJS project example</div>
+<div align="center">A basic ExpressJS, MySQL, ReactJS, VueJS project example</div>
 
 <br />
 
@@ -23,5 +23,6 @@
 
 ## Project
  - ExpressJS [Go to folder](/backend/)
+ - ReactJS [Go to folder](/fe-react/)
 
 This project contain some examples to build backend using REST API and how to implement it in ReactJS and VueJS.

@@ -1,27 +1,27 @@
-# React + TypeScript + Vite
+# ReactJS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is only the example of front end project in ReactJS. For disclaimer,  this project might not contain the best practices of the industry but it's only purposed to show you how we use it to work with the API and plug it into the front end.
 
-Currently, two official plugins are available:
+### Features
+##### Authentication
+> Contain login, register, forgot password, and authentication
+##### User management page
+> Contain CRUD user management
+##### Role page
+> Contain list the available roles
+##### File management page
+> Contain CRUD file management
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### What you can learn here
+- React router
+- User authentication
+- File uploading
+- Using form in React
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### How can I contribute?
+You can make contribution by opening a pull request or opening an issues.
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- [ ] Unit testing
+- [ ] e2e testing
+- [ ] UI enhancement

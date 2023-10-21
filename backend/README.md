@@ -60,3 +60,10 @@ Database migration files are located in `/db` directory.
 |--- migrations
 |--- seeders
 ```
+
+
+### How can I contribute?
+You can make contribution by opening a pull request or opening an issues.
+
+- [ ] Unit testing
+- [ ] Typescript enhancement
